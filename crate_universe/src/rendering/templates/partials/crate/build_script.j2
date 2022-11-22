@@ -13,7 +13,7 @@ cargo_build_script(
         {%- endfor %}
         {%- endif %}
     ],
-    data = {% if crate.build_script_attrs | get(key="data_glob") %}glob({{ crate.build_script_attrs.data_glob | json_encode | safe }}) + {% endif %}{% set selectable = crate.build_script_attrs | get(key="data", default=Null) %}{% include "partials/starlark/selectable_list.j2" %},
+    data = {% if crate.build_script_attrs | get(key="data_glob") %}glob({{ crate.build_script_attrs.data_glob | json_encode | safe }}, exclude = ["BUILD", "BUILD.bazel", "WORKSPACE", "WORKSPACE.bazel", "**/* *"]) + {% endif %}{% set selectable = crate.build_script_attrs | get(key="data", default=Null) %}{% include "partials/starlark/selectable_list.j2" %},
     deps = [
         {%- for dep in crate.build_script_attrs | get(key="extra_deps", default=[]) %}
         "{{ dep }}",
